@@ -1,0 +1,63 @@
+{
+  "name": "spinal-browser-space_management",
+  "version": "1.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "rm -rf wwww && NODE_ENV=production node bin/parcel.config.js",
+    "dev": "NODE_ENV=development node bin/parcel.config.js",
+    "reset": "rm -fr www",
+    "postinstall": "npm run spinal-register && npm run build",
+    "spinal-register": "spinal-register --browser 'spinal-browser-'",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "create_space_management_env": "bin/parcel.config.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.8.1",
+    "aes-js": "^3.1.2",
+    "app.vue": "^0.1.10",
+    "bootstrap": "^4.3.1",
+    "bootstrap-vue": "^2.0.0-rc.16",
+    "config": "^3.2.2",
+    "jquery": "^3.3.1",
+    "lodash.throttle": "4.1.1",
+    "parcel-bundler": "^1.12.3",
+    "selectbar": "^1.0.1",
+    "spinal-core-connectorjs_type": "git+https://github.com/spinalcom/spinal-core-connectorjs_type.git",
+    "spinal-core-system": "git+https://github.com/spinalcom/spinal-core-system.git",
+    "spinal-env-drive-core": "git+https://github.com/spinalcom/spinal-env-drive-core.git",
+    "spinal-env-space_management-btn-joint": "git+https://github.com/spinalcom/spinal-env-space_management-btn-joint.git",
+    "spinal-env-viewer-context-menu-service": "git+https://github.com/spinalcom/spinal-env-viewer-context-menu-service.git",
+    "spinal-env-viewer-graph-service": "git+https://github.com/spinalcom/Spinal-Graph-Service.git",
+    "spinal-forge-viewer": "git+https://github.com/spinalcom/spinal-forge-viewer.git",
+    "spinal-forge-viewer-vue": "git+https://github.com/spinalcom/spinal-forge-viewer-vue.git",
+    "store": "^2.0.12",
+    "vue": "^2.6.10",
+    "vue-router": "3.0.6",
+    "vue-sidebar-menu": "^3.6.3",
+    "vuetify": "^1.5.14"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/plugin-proposal-decorators": "^7.4.4",
+    "@babel/plugin-transform-runtime": "^7.4.4",
+    "@vue/component-compiler-utils": "^2.6.0",
+    "babel-preset-es2017": "^6.24.1",
+    "stylus": "^0.54.5"
+  },
+  "browserslist": [
+    "last 1 chrome versions"
+  ],
+  "browserify": {
+    "transform": [
+      "vueify",
+      "babelify"
+    ]
+  }
+}
