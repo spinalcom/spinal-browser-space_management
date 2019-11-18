@@ -1,22 +1,40 @@
 {
-  "name": "spinal-browser-space_management",
-  "version": "1.0.1",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "build": "rm -rf wwww && NODE_ENV=production node bin/parcel.config.js",
-    "dev": "NODE_ENV=development node bin/parcel.config.js",
-    "reset": "rm -fr www",
-    "postinstall": "npm run spinal-register && npm run build",
-    "spinal-register": "spinal-register --browser 'spinal-browser-'",
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "_from": "git+https://github.com/spinalcom/spinal-browser-space_management.git",
+  "_id": "spinal-browser-space_management@1.0.1",
+  "_inBundle": false,
+  "_integrity": "",
+  "_location": "/spinal-browser-space_management",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "git",
+    "raw": "spinal-browser-space_management@git+https://github.com/spinalcom/spinal-browser-space_management.git",
+    "name": "spinal-browser-space_management",
+    "escapedName": "spinal-browser-space_management",
+    "rawSpec": "git+https://github.com/spinalcom/spinal-browser-space_management.git",
+    "saveSpec": "git+https://github.com/spinalcom/spinal-browser-space_management.git",
+    "fetchSpec": "https://github.com/spinalcom/spinal-browser-space_management.git",
+    "gitCommittish": null
   },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "git+https://github.com/spinalcom/spinal-browser-space_management.git#0f43e3d9130037abd9d4ca0430ed3039a50a442b",
+  "_spec": "spinal-browser-space_management@git+https://github.com/spinalcom/spinal-browser-space_management.git",
+  "_where": "/home/spinalcom/Documents/spinal/full",
+  "author": "",
   "bin": {
     "create_space_management_env": "bin/parcel.config.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "browserify": {
+    "transform": [
+      "vueify",
+      "babelify"
+    ]
+  },
+  "browserslist": [
+    "last 1 chrome versions"
+  ],
+  "bundleDependencies": false,
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.8.1",
     "aes-js": "^3.1.2",
@@ -42,6 +60,8 @@
     "vue-sidebar-menu": "^3.6.3",
     "vuetify": "^1.5.14"
   },
+  "deprecated": false,
+  "description": "a specific browser for space_management.",
   "devDependencies": {
     "@babel/core": "^7.4.5",
     "@babel/plugin-proposal-class-properties": "^7.4.4",
@@ -51,13 +71,17 @@
     "babel-preset-es2017": "^6.24.1",
     "stylus": "^0.54.5"
   },
-  "browserslist": [
-    "last 1 chrome versions"
-  ],
-  "browserify": {
-    "transform": [
-      "vueify",
-      "babelify"
-    ]
-  }
+  "keywords": [],
+  "license": "ISC",
+  "main": "index.js",
+  "name": "spinal-browser-space_management",
+  "scripts": {
+    "build": "rm -rf wwww && NODE_ENV=production node bin/parcel.config.js",
+    "dev": "NODE_ENV=development node bin/parcel.config.js",
+    "postinstall": "npm run spinal-register && npm run build",
+    "reset": "rm -fr www",
+    "spinal-register": "spinal-register --browser 'spinal-browser-'",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "1.0.1"
 }

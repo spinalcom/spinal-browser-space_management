@@ -1,58 +1,54 @@
 <template>
 <div>
 	<button class="backButton" @click="backToProcess"><v-icon color="white">arrow_back</v-icon></button>
-	<div id="displayDetails">
-		<div class="applicationDetailsDisplay">
-			<v-icon class="applicationFloatDisplay" @click="onClick">remove_red_eye</v-icon> 
-		</div>
-		<div class="processDisplayColor" :style="{backgroundColor:ticket.color.get()}">
-		</div>
-		<div class="informationTicketDisplay">
-			<div class="lineDisplayInfo"> name: {{ ticket.name.get() }}</div>
-			<div class="lineDisplayInfo"> Etat: {{ ticket.stepName }}</div>
-			<div class="lineDisplayInfo"> Date : {{ timeConverter(ticket.creationDate.get()) }}</div>
-			<div class="lineDisplayInfo">Auteur : {{ ticket.username.get() }} </div>
-		</div>
-		<v-textarea label="note" id="textDetails"> {{ ticket.note.get() }} </v-textarea>
-		<div class="displayLogForTicket" >
-			log
-			<div v-for="x in 1">
-				<div class="elementToDisplayDetails"> creation : {{ timeConverter(ticket.creationDate.get()) }} </div>
-			</div>
-		</div>
-	</div>
+	<canvas id="myChart"></canvas>
 </div>
 </template>
 
 <script>
 import { EventBus } from "../../config/event";
-
+import chart from "chart.js"
 export default {
 	name: "ticketDetails",
 	data () {
       return { }
     },
-    props: ["ticket"],
-    mounted() { },
+    props: ["room", "title","ticket"],
+    mounted() { 
+	var ctx = document.getElementById('myChart').getContext('2d');
+	let data = {
+       	labels: [],
+       	datasets: [{
+           	backgroundColor: [],
+           	borderColor: 'black',
+           	data: [2, 10]
+       	}]
+    };
+ 	console.log("data",this.ticket);
+
+	for (var item in this.ticket) {
+		console.log("--->", this.ticket[item])
+		data.labels.push(this.ticket[item].name.get())
+		data.datasets[0].backgroundColor.push(this.ticket[item].color.get())
+	}
+	var chart = new Chart(ctx, {
+    	// The type of chart we want to create
+    	type: 'doughnut',
+
+    	// The data for our dataset
+    	data,
+
+    	// Configuration options go here
+    	options: {}
+	});
+    },
     methods: {
     	backToProcess() {
     		EventBus.$emit("close-details");
     	},
     	onClick() {
     		EventBus.$emit("click-details", this.ticket.idObject )
-    	},
-    	timeConverter(UNIX_timestamp){
-			var a = new Date(UNIX_timestamp);
-			var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-			var year = a.getFullYear();
-			var month = months[a.getMonth()];
-			var date = a.getDate();
-			var hour = a.getHours();
-			var min = a.getMinutes();
-			var sec = a.getSeconds();
-			var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
-			return time;
-		}
+    	}
     }
 };
 </script>
@@ -82,7 +78,6 @@ export default {
     width: 90px;
     padding-bottom: 8px;
 }
-
 .applicationDetailsDisplay {
 	border: 1px solid;
 	height: 25px;
@@ -90,14 +85,12 @@ export default {
 .applicationFloatDisplay {
 	float: right;
 }
-
 .processDisplayColor {
 	margin-top: 10px;
 	border: 1px solid;
 	height: 100px;
 	width:  18%;
 	display: inline-block;
-
 }
 .informationTicketDisplay {
 	border: 1px solid;
@@ -110,12 +103,10 @@ export default {
 .lineDisplayInfo {
 	margin-top: 6px;
 }
-
 #textDetails {
 	border: 1px solid;
 	height: 60px;
 }
-
 .elementToDisplayDetails {
 border: 0.1px solid;
 }

@@ -135,10 +135,10 @@ class SpinalIO {
   getPathModel() {
     try {
       const path = this.getModelPath();
+      return this.load(path);
     } catch(e) {
       return this.load(`/__users__/public/digital_twin/default`);
     }
-    return this.load(path);
   }
 
   load(path) {

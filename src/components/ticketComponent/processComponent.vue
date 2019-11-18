@@ -1,17 +1,17 @@
 <template>
 	<div class="overflowDisplayProcess">
 		<div class="selectEyeForTickets">
-		<button><v-icon>get_app</v-icon></button>
-		<button><v-icon>assessment</v-icon></button>
+		<!-- <button><v-icon>get_app</v-icon></button>
+		<button><v-icon>assessment</v-icon></button> -->
 		</div>
-		<p class="displayProcessElementTitle">Choose a process</p>
-		<div v-for="element in processList" class="displayButtonChooseProcess">
+		<p class="displayProcessElementTitle">Choose a group</p>
+		<div v-for="element in allData.roomData" class="displayButtonChooseProcess">
 			<button class="buttonProcessDisplay" @click="selectProcess"> 
 <!-- 				<v-badge right color="red">
       <template v-slot:badge>
         <span class="processBadge">6</span>
       </template> -->
-				{{ element }}
+				{{ element.name.get() }}
 				<p class="displayCountBadge" v-if="displayBadge(element) !== ' '">{{ displayBadge(element) }}</p>
 			</button>
 
@@ -36,7 +36,9 @@ export default {
 			if (target.target.className !== "displayCountBadge") {
 				let txt = target.target.innerHTML.split(/</g)[0].split('\n').join('');
 				txt = txt.split('\t').join('');
-				EventBus.$emit("select-process", txt);
+				for (var ite in this.allData.roomData)
+					if(this.allData.roomData[ite].name.get() === txt)
+						EventBus.$emit("select-process", this.allData.roomData[ite]);
 			}
 		},
 		calculateTotal(bool, item) {
@@ -80,6 +82,7 @@ export default {
 		}
 	},
 	mounted() {
+		console.log("mounted ====>", this.allData);
 		let self = this;
 		this.getEvent();
 		if (this.load) {

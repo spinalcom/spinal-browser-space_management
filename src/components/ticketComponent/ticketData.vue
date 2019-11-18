@@ -75,9 +75,11 @@ export default {
       let self = this;
       EventBus.$on("click-event", item => self.levelSelected = item.name );
       EventBus.$on("select-process", process => {
+      	console.log("----------selectprocess->", process)
 		self.active = "table";
-		self.selectProcess = process;
-		self.triTicket();
+		self.selectedTicket = process.group;
+		self.selectProcess = process.name.get();
+		//self.triTicket();
 		self.load = true;
      });
      EventBus.$on("getBackToProcess", (lvl) => {
@@ -93,7 +95,7 @@ export default {
 		self.init = false;
 		self.triTicket();
      });
-     EventBus.$on("calendar-tickets", arrayOfNode =>  { 
+     EventBus.$on("calendar-tickets", arrayOfNode =>  {
      	console.log("calendar-tickets", arrayOfNode);
      	this.selectedTicket = arrayOfNode;
      	this.active = "table";
@@ -107,7 +109,7 @@ export default {
      	self.backFrom = '';
 		self.resetOverOnTableElement();
 		self.levelSelected = "";
-		self.triTicket();
+		//self.triTicket();
      })
 	},
 	exportCsv() {
@@ -122,6 +124,7 @@ export default {
 		this.download("ticket_export.csv", result);
 	},
 	showDetails(item){
+		//console.log("showdetails --->", item);
 		this.ticketDetails = item;
 		this.active = 'detail';
 	},

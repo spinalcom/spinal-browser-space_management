@@ -3,11 +3,11 @@
 	<div>
 		<button class="backButton" @click="backToProcess"><v-icon color="white">arrow_back</v-icon></button>
 		<p id="title">{{title}}</p>
-		<filter-dialog :steps="steps" 
-				   :selectedSteps="selectedSteps" ></filter-dialog>
-		<button id="selectEyeForTickets" @click="exportCsv"><v-icon>get_app</v-icon></button>
-		<button id="selectEyeForTickets" @click="analytics"><v-icon>assessment</v-icon></button>
-		<button id="selectEyeForTickets" @click="showTicketsColor"><v-icon>remove_red_eye</v-icon></button>
+<!-- 		<filter-dialog :steps="steps" 
+				   :selectedSteps="selectedSteps" ></filter-dialog> --><!-- 
+		<button id="selectEyeForTickets" @click="exportCsv"><v-icon>get_app</v-icon></button> -->
+		<button id="selectEyeForTickets" @click="selectDetails"><v-icon>assessment</v-icon></button> 
+		<!-- <button id="selectEyeForTickets" @click="showTicketsColor"><v-icon>remove_red_eye</v-icon></button> -->
 
 	</div>
   <v-data-table
@@ -38,11 +38,17 @@
       </v-tooltip>
     </template>
     <template v-slot:items="props">
-       	<td @mouseover="overTableRow(props)" @mouseleave="mouseLeave()" @click="onClick(props, $event)">{{ props.item.name.get() }}</td>
+     	<td>{{ props.item.name.get() }}</td>
+
+		<td class="text-xs-right">
+      		{{ props.item.stepName }}<p class="colorPatchDisplay displayInline" :style="{backgroundColor: props.item.color.get()}" ></p></td>
+
+
+<!--        	<td @mouseover="overTableRow(props)" @mouseleave="mouseLeave()" @click="onClick(props, $event)">{{ props.item.name.get() }}</td>
       	<td @mouseover="overTableRow(props)" @mouseleave="mouseLeave()" @click="onClick(props, $event)" class="text-xs-right">{{ ticketDate(props.item.creationDate.get()) }}</td>
       	<td class="text-xs-right" @click="onClick(props, $event)" @mouseover="overTableRow(props)" @mouseleave="mouseLeave()">
       		{{ props.item.stepName }}<p class="colorPatchDisplay displayInline" :style="{backgroundColor: props.item.color.get()}" ></p></td>
-       	<td style="float:right; padding-top:10px" ><v-icon @click="selectDetails(props)">not_listed_location</v-icon></td>
+       	<td style="float:right; padding-top:10px" ><v-icon @click="selectDetails(props)">not_listed_location</v-icon></td> -->
     </template>
   </v-data-table>
 </div>
@@ -60,18 +66,32 @@ export default {
 	},
 	data () {
       return {
-        headers: [
-          {
-            text: 'Ticket Name',
-            align: 'left',
-            sortable: false,
-            value: 'name'
-          },
-          { text: 'Creation Date', value: 'creation date', align: 'center' },
-          { text: 'Step', value: 'step', align: 'center'},
-          { text:"Details",
-			align: 'right'}
-          ],
+      	headers: [
+      		{
+      			text: 'Name',
+      			align: 'left',
+      			sortable: false,
+      			value: 'name'
+      		},
+      		{
+      			text: 'color',
+      			align: 'right',
+      			sortable: false,
+      			value: 'color'
+      		}
+      	],
+   //      headers: [
+   //        {
+   //          text: 'Ticket Name',
+   //          align: 'left',
+   //          sortable: false,
+   //          value: 'name'
+   //        },
+   //        { text: 'Creation Date', value: 'creation date', align: 'center' },
+   //        { text: 'Step', value: 'step', align: 'center'},
+   //        { text:"Details",
+			// align: 'right'}
+   //        ],
 		pagination: {
 			descending: true,
 			page: 1,
@@ -85,7 +105,9 @@ export default {
       }
     },
     props: ["allTickets", "steps", "selectedSteps", "title"],
-    mounted() { },
+    mounted() {
+    	console.log("mounted", this.allTickets);
+     },
     methods: {
     	onResize() {},
 		backToProcess() {
@@ -136,8 +158,9 @@ export default {
 		mouseLeave() {
 			EventBus.$emit("mouse-leave");
 		},
-		selectDetails(item) {
-			EventBus.$emit("ticket-details", item.item);
+		selectDetails() {
+		//	console.log("before details =", this.allTickets);
+			EventBus.$emit("ticket-details", this.allTickets);
 		},
 		onClick(item, event) {
 				if (this.clicked === false) {

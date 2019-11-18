@@ -136,6 +136,59 @@ let dataService = {
       };
     }))
   },
+  async extractRoomData(obj) {
+    console.log("in extract");
+    let info = [];
+    obj['room'] = info;
+
+    let context = await graph.SpinalGraphService.getContext(
+      "Space" );
+
+    if (typeof context === "undefined")
+      return Promise.resolve([]);
+
+    let self = this;
+    graph.SpinalGraphService.getChildren(context.info.id).then(allProcess => {
+      for (nodes in allProcess) {
+        console.log("nodes ==------------------------- ", allProcess[nodes].name.get());
+        info.push(allProcess[nodes]);
+        this.getGroupInfo(allProcess[nodes]);
+      }
+    });
+
+  },
+  getGroupInfo(node) {
+    node['group'] = [];
+    graph.SpinalGraphService.getChildren(node.id.get()).then(allGroup => {
+      for (nodes in allGroup) {
+        node['group'].push(allGroup[nodes]);
+        //node.push(allGroup[nodes]);
+        // console.log("nodes = ", allGroup[nodes].name.get());
+        this.getRoomInfo(allGroup[nodes]);
+      }
+    });
+  },
+  getRoomInfo(group) {
+    group['allRooms'] = [];
+    graph.SpinalGraphService.getChildren(group.id.get()).then(allRoom => {
+      for (nodes in allRoom) {
+        group['allRooms'].push(allRoom[nodes]);
+        //console.log("nodes ON group = ", allRoom[nodes].name.get());
+        this.extractInfo(allRoom[nodes]);
+      }
+    });
+  },
+  extractInfo(room) {
+    room['space'] = [];
+    graph.SpinalGraphService.getChildren(room.id.get()).then(allSpace => {
+      for (nodes in allSpace) {
+        room['space'].push(allSpace[nodes]);
+        // console.log("--------------------L>", room);
+
+        //console.log("nodes ON group = ", allSpace[nodes].name.get());
+      }
+    });
+  },
   async getEquipments(floors) {
     for (var index in floors)
       for (var floor in floors[index])
@@ -183,12 +236,14 @@ let dataService = {
     this.getTickets(rooms, processName);
     this.getEquipments(rooms);
     this.getProcessName(processName);
+    this.extractRoomData(processName);
     
     return {
       floors: floors,
       rooms: rooms,
       process: processName['process'],
       processIcons: processName['icon'],
+      roomData: processName['room'],
       totalTickets: this.total,
       equipements: ''
     }
