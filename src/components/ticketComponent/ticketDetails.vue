@@ -1,9 +1,8 @@
 <template>
 <div>
 	<button class="backButton" @click="backToProcess"><v-icon color="white">arrow_back</v-icon></button>
-	<select>
-		<option value="circle">circle</option>
-		<option value=""></option>
+	<select style="margin-left:30%">
+		<option value="Doughnut">Doughnut</option>
 	</select>
 	<canvas id="myChart"></canvas>
 </div>

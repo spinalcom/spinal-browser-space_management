@@ -191,31 +191,22 @@ export default {
       this.viewer.fitToView([selection]);
       
     },
-    displayTicketsColor(items) {
+    displayTicketsColor(arr) {
+      let items = [];
       let self = this;
-      let realNode;
+      
+      for (var item in arr[0].allRooms) {
+        items.push(arr[0].allRooms[item]);
+      }
+      let result = [];
+      for (var node in items) {
+        result.push(items[node].space[0].dbid.get());
+        this.colors[node] = '#6e0000'; 
+      }
+      
       this.ticketToZoom = [];
-      this.colors = {}
-      let iterator = 0;
-            for (var node in items) {
-              realNode = graph.SpinalGraphService.getRealNode(items[node].id.get());
-              self.colors[iterator] = items[node].color.get();
-
-               realNode.find( [
-                 'SpinalSystemServiceTicketHasLocation',
-                 "hasBIMObject",
-                 'hasReferenceObject'
-               ],
-               self.predicat
-               )
-               .then( lst => {
-                 let result = lst.map( function(x) { return (x.info.dbid.get()) });
-                 self.ticketToZoom.push(result);
-               } );
-               iterator++
-
-            }
-
+      this.ticketToZoom.push(result)
+      
       setTimeout(function() {
         self.setColorMaterial()
       }, 1);
@@ -239,7 +230,8 @@ export default {
       let loop = 0;
       var x = setInterval(function() {
         color = self.colors[iterator].replace(/#/g, "0x");
-        self.viewer.setColorMaterial(self.ticketToZoom[iterator], color)
+        console.log(self.ticketToZoom[iterator], color);
+        self.viewer.setColorMaterial(self.ticketToZoom[iterator], '0x6E0000')
         iterator++;
         if (self.ticketToZoom[iterator] === undefined && loop === 0) {
           iterator = 0;

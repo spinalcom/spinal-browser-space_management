@@ -38,9 +38,9 @@
       </v-tooltip>
     </template>
     <template v-slot:items="props">
-     	<td>{{ props.item.name.get() }}</td>
+     	<td @click="onClick(props, $event)">{{ props.item.name.get() }}</td>
 
-		<td class="text-xs-right">
+		<td class="text-xs-right" @click="onClick(props, $event)">
       		{{ props.item.stepName }}<p class="colorPatchDisplay displayInline" :style="{backgroundColor: props.item.color.get()}" ></p></td>
 
 
