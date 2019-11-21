@@ -1,6 +1,10 @@
 <template>
 <div>
 	<button class="backButton" @click="backToProcess"><v-icon color="white">arrow_back</v-icon></button>
+	<select>
+		<option value="circle">circle</option>
+		<option value=""></option>
+	</select>
 	<canvas id="myChart"></canvas>
 </div>
 </template>
@@ -11,26 +15,33 @@ import chart from "chart.js"
 export default {
 	name: "ticketDetails",
 	data () {
-      return { }
+      return {
+      	data: {
+       	labels: [],
+       	datasets: [{ 
+           	backgroundColor: [],
+           	borderColor: 'black',
+           	data: []
+       	}]
+    	},
+      }
     },
     props: ["room", "title","ticket"],
     mounted() { 
 	var ctx = document.getElementById('myChart').getContext('2d');
-	let data = {
-       	labels: [],
-       	datasets: [{
-           	backgroundColor: [],
-           	borderColor: 'black',
-           	data: [2, 10]
-       	}]
-    };
- 	console.log("data",this.ticket);
-
+ 	let count = 0;
 	for (var item in this.ticket) {
-		console.log("--->", this.ticket[item])
-		data.labels.push(this.ticket[item].name.get())
-		data.datasets[0].backgroundColor.push(this.ticket[item].color.get())
+		this.data.labels.push(this.ticket[item].name.get())
+		this.data.datasets[0].backgroundColor.push(this.ticket[item].color.get())
+		for (var room in this.ticket[item].allRooms)
+			for (var iterator in this.ticket[item].allRooms[room].space)
+				if (this.ticket[item].allRooms[room].space[iterator].space)
+					count = count + parseInt(this.ticket[item].allRooms[room].space[iterator].space);
+
+		this.data.datasets[0].data.push(count);
+		count = 0;
 	}
+	let data = this.data;
 	var chart = new Chart(ctx, {
     	// The type of chart we want to create
     	type: 'doughnut',

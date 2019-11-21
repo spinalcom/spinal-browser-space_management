@@ -1,7 +1,8 @@
 import geographicService from "spinal-env-viewer-context-geographic-service";
 import { SERVICE_NAME, SPINAL_TICKET_SERVICE_TARGET_RELATION_NAME } from "spinal-service-ticket/dist/Constants";
 import graph from "./GraphService";
-
+import {serviceDocumentation} from "spinal-env-viewer-plugin-documentation-service";
+const attributeType = "hasCategoryAttributes";
 const geographicConstants = geographicService.constants;
 
 let dataService = {
@@ -171,10 +172,10 @@ let dataService = {
   getRoomInfo(group) {
     group['allRooms'] = [];
     graph.SpinalGraphService.getChildren(group.id.get()).then(allRoom => {
-      for (nodes in allRoom) {
-        group['allRooms'].push(allRoom[nodes]);
-        //console.log("nodes ON group = ", allRoom[nodes].name.get());
-        this.extractInfo(allRoom[nodes]);
+      for (nodes of allRoom) {
+        group['allRooms'].push(nodes);
+        //console.log("nodes ON group = ", nodes);
+        this.extractInfo(nodes);
       }
     });
   },
@@ -184,10 +185,22 @@ let dataService = {
       for (nodes in allSpace) {
         room['space'].push(allSpace[nodes]);
         // console.log("--------------------L>", room);
-
+        this.extractSpace(allSpace[nodes]);
         //console.log("nodes ON group = ", allSpace[nodes].name.get());
       }
     });
+  }, // getrealnode -> getchildren -> getchildren 
+  async extractSpace(space){
+    let rnode = graph.SpinalGraphService.getRealNode(space.id.get());
+
+    let test = await rnode.getChildren([attributeType]);
+    let valu;
+    let iterator = 0;
+    if (test[0] && test[0].info.name.get() === "space") {
+       valu = await test[0].element.load()
+       space['space'] = valu[0].value.get();
+      //onsole.log("space detected!", valu[0].value.get(), "for ", space.name.get());
+    }
   },
   async getEquipments(floors) {
     for (var index in floors)
